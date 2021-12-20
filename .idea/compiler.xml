@@ -7,14 +7,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="KinoTicketRes" />
+        <module name="Azure" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Azure" target="11" />
       <module name="KinoTicketRes" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Azure" options="-parameters" />
       <module name="KinoTicketRes" options="-parameters" />
     </option>
   </component>
