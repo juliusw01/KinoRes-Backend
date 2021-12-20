@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Kinoticketres-Backend-main/KinoTicketRes.iml" filepath="$PROJECT_DIR$/Kinoticketres-Backend-main/KinoTicketRes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/KinoTicketRes.iml" filepath="$PROJECT_DIR$/KinoTicketRes.iml" />
     </modules>
   </component>
 </project>
