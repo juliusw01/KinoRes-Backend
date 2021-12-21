@@ -5,6 +5,9 @@ name: Build and deploy JAR app to Azure Web App - KinoticketRes
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
