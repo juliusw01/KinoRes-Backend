@@ -85,8 +85,9 @@ public class MovieTest {
         Movie m4 = new Movie("Star Wars", "German", 120, null, "Weltraum ist cool", d, "https://picute.link", "https://trailer-link", false, 12);
         assertNotEquals(m.hashCode(), m3.hashCode());
         assertNotEquals(m.hashCode(), m4.hashCode());
-        m2.setId(uuid);
-        assertNotEquals(m.hashCode(), m2.hashCode());
+        Movie m11 = new Movie("Star Wars", "German", 120, "George Lucas", null, d, "https://picute.link", "https://trailer-link", false, 12);
+        m11.setId(uuid);
+        assertNotEquals(m.hashCode(), m11.hashCode());
         Movie m5 = new Movie("Star Wars", "German", 120, "George Lucas", null, d, "https://picute.link", "https://trailer-link", true, 12);
         assertNotEquals(m.hashCode(), m5.hashCode());
         Movie m6 = new Movie("Star Wars", "Spain but the S is silent", 120, "George Lucas", null, d, "https://picute.link", "https://trailer-link", true, 12);
