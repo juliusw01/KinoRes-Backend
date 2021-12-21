@@ -39,7 +39,6 @@ public class LayoutTest {
 
         l.setTotalSeats(30);
         assertEquals(30, l.getTotalSeats());
-
     }
 
     @Test
