@@ -1,6 +1,7 @@
 package de.wi2020sebgruppe4.KinoTicketRes.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -39,6 +40,7 @@ public class MovieTest {
         assertEquals("https://trailer-link", m.getTrailerLink());
         assertEquals(false, m.isAvailableIn3D());
         assertEquals(12, m.getFSK());
+        
     }
 
     @Test
@@ -56,6 +58,7 @@ public class MovieTest {
         m.setTrailerLink("https://trailer-link");
         m.setAvailableIn3D(true);
         m.setFSK(12);
+        m.setId(uuid);
 
         assertEquals("Star Wars", m.getTitel());
         assertEquals("German", m.getLanguage());
@@ -67,6 +70,7 @@ public class MovieTest {
         assertEquals("https://trailer-link", m.getTrailerLink());
         assertEquals(true, m.isAvailableIn3D());
         assertEquals(12, m.getFSK());
+        assertEquals(uuid, m.getId());
     }
 
     @Test
@@ -77,7 +81,24 @@ public class MovieTest {
         Movie m2 = new Movie("Star Wars", "German", 120, "George Lucas", "Weltraum ist cool", d, "https://picute.link", "https://trailer-link", false, 12);
         assertEquals(m.hashCode(), m2.hashCode());
         assertEquals(m.equals(m2), true);
-
+        Movie m3 = new Movie("Star Wars", "German", 120, "George Lucas", null, d, "https://picute.link", "https://trailer-link", false, 12);
+        Movie m4 = new Movie("Star Wars", "German", 120, null, "Weltraum ist cool", d, "https://picute.link", "https://trailer-link", false, 12);
+        assertNotEquals(m.hashCode(), m3.hashCode());
+        assertNotEquals(m.hashCode(), m4.hashCode());
+        m2.setId(uuid);
+        assertNotEquals(m.hashCode(), m2.hashCode());
+        Movie m5 = new Movie("Star Wars", "German", 120, "George Lucas", null, d, "https://picute.link", "https://trailer-link", true, 12);
+        assertNotEquals(m.hashCode(), m5.hashCode());
+        Movie m6 = new Movie("Star Wars", "Spain but the S is silent", 120, "George Lucas", null, d, "https://picute.link", "https://trailer-link", true, 12);
+        assertNotEquals(m.hashCode(), m6.hashCode());
+        Movie m7 = new Movie("Star Wars", "Spain but the S is silent", 120, "George Lucas", null, d, null, "https://trailer-link", true, 12);
+        assertNotEquals(m.hashCode(), m7.hashCode());
+        Movie m8 = new Movie("Star Wars", "Spain but the S is silent", 120, "George Lucas", null, null, "https://picute.link", "https://trailer-link", true, 12);
+        assertNotEquals(m.hashCode(), m8.hashCode());
+        Movie m9 = new Movie(null, "Spain but the S is silent", 120, "George Lucas", null, d, "https://picute.link", "https://trailer-link", true, 12);
+        assertNotEquals(m.hashCode(), m9.hashCode());
+        Movie m10 = new Movie(null, "Spain but the S is silent", 120, "George Lucas", null, d, "https://picute.link", null, true, 12);
+        assertNotEquals(m.hashCode(), m10.hashCode());
     }
     
     @Test
