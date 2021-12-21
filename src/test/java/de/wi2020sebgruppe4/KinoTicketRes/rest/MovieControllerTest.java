@@ -1,7 +1,13 @@
 package de.wi2020sebgruppe4.KinoTicketRes.rest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -12,16 +18,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -61,10 +63,15 @@ public class MovieControllerTest {
     }
 	
 	 Movie getMovie() {
-		    Movie m = new Movie("Star Wars", "German", 120, "George Lucas", "Weltraum ist cool", new Date(2015-03-31), "https://picute.link", "https://trailer-link", false, 12);
+		    Movie m = new Movie("Star Wars2", "German", 120, "George Lucas", "Weltraum ist cool", null, "https://picute.link", "https://trailer-link", false, 12);
 	    	m.setId(uuid);
 	    	return m;
 	}
+	 
+	 Optional<Movie> getOptionalMovie() {
+	    	Movie m = getMovie();
+	    	return Optional.of(m);
+	 }
 	 
 	@Test
     void testGetAll() throws Exception {
@@ -72,4 +79,14 @@ public class MovieControllerTest {
         mvc.perform(get("/movies"))
                 .andExpect(status().isOk());
     }
+	
+	@Test
+	void testGetById() throws Exception {
+		when(repo.findById(uuid)).thenReturn(getOptionalMovie());
+		MockHttpServletResponse response = mvc.perform(get("/movies/" + uuid)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andReturn().getResponse();
+		assertEquals(jt.write(getMovie()).getJson(), response.getContentAsString());
+	}
 }
