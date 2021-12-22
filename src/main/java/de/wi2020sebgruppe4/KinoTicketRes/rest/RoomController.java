@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ public class RoomController {
 	@Autowired
 	LayoutRepository layoutRepository;
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@PutMapping("/add")
 	public ResponseEntity<Object> addCinemaRoom(@RequestBody RoomRequestObject rro){
 		
@@ -54,6 +56,7 @@ public class RoomController {
 		return new ResponseEntity<Object>(repo.save(toBuild), HttpStatus.CREATED);
 	}
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Object> updateCinemaRoom(@PathVariable UUID id, @RequestBody RoomRequestObject rro2){
 		
@@ -86,11 +89,13 @@ public class RoomController {
 		
 	}
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@GetMapping("")
 	public ResponseEntity<Iterable<Room>> getAllCinemaRooms(){
 		return new ResponseEntity<Iterable<Room>>(repo.findAll(), HttpStatus.OK);
 	}
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getCinemaRoom(@PathVariable UUID id){
 		Optional<Room> search = repo.findById(id);
@@ -105,6 +110,7 @@ public class RoomController {
 		
 	}
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteCinemaRoom(@PathVariable UUID id){
 		Optional<Room> o = repo.findById(id);
