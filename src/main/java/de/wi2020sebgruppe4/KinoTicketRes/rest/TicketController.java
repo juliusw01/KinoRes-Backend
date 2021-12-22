@@ -28,6 +28,7 @@ import de.wi2020sebgruppe4.KinoTicketRes.repositories.UserRepository;
 
 @Controller
 @RestController
+@CrossOrigin(origins = "https://kinoticketres.web.app")
 @RequestMapping("/tickets")
 public class TicketController {
 	
@@ -48,7 +49,7 @@ public class TicketController {
 		return new ResponseEntity<Object>(repo.findAll(), HttpStatus.OK);
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@PutMapping("/add")
 	@Transactional
 	public ResponseEntity<Object> addTicket(@RequestBody TicketRequestObject tro) {
@@ -82,7 +83,7 @@ public class TicketController {
 		return new ResponseEntity<Object>(repo.save(toAdd), HttpStatus.CREATED);
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getSpecific(@PathVariable UUID id){
 		try {
@@ -94,7 +95,7 @@ public class TicketController {
 		}
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> cancelTicket(@PathVariable UUID id){
 		

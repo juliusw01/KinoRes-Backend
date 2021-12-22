@@ -27,6 +27,7 @@ import de.wi2020sebgruppe4.KinoTicketRes.repositories.RoomRepository;
 
 @Controller
 @RestController
+@CrossOrigin(origins = "https://kinoticketres.web.app")
 @RequestMapping("/layouts")
 public class LayoutController {
 	
@@ -36,7 +37,7 @@ public class LayoutController {
 	@Autowired
 	RoomRepository roomRepository;
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@PutMapping("/add")
 	@Transactional
 	public ResponseEntity<Object> addSeatingPlan(@RequestBody LayoutRequestObject lro){
@@ -58,7 +59,7 @@ public class LayoutController {
 		return new ResponseEntity<Object>(repo.save(layout), HttpStatus.CREATED);
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Object> updateSeatingPlan(@PathVariable UUID id, @RequestBody LayoutRequestObject lro){
 		Optional<Layout> oldSeatingPlan = repo.findById(id);
@@ -86,7 +87,7 @@ public class LayoutController {
 		}
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@GetMapping("")
 	public ResponseEntity<Object> getAll(){
 		return new ResponseEntity<Object>(repo.findAll(), HttpStatus.OK);
@@ -102,7 +103,7 @@ public class LayoutController {
 		}
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@Transactional
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteById(@PathVariable UUID id){

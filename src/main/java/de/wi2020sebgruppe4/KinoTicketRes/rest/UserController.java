@@ -23,19 +23,20 @@ import de.wi2020sebgruppe4.KinoTicketRes.repositories.UserRepository;
 
 @Controller
 @RestController
+@CrossOrigin(origins = "https://kinoticketres.web.app")
 @RequestMapping("/users")
 public class UserController {
 	
 	@Autowired
 	private UserRepository repo;
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@GetMapping("")
 	public ResponseEntity<Iterable<User>> getUsers(){
 		return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
 	}	
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getSpecific(@PathVariable UUID id){
 		
@@ -51,7 +52,7 @@ public class UserController {
 		
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@PutMapping("/add")
 	public ResponseEntity<Object> addUser(@RequestBody UserRequestObject uro){
 		User toAddUser = new User();
@@ -63,7 +64,7 @@ public class UserController {
 		return new ResponseEntity<Object>( repo.save(toAddUser), HttpStatus.CREATED);
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteUser(@PathVariable UUID id){
 		Optional<User> o = repo.findById(id);
