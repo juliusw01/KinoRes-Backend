@@ -35,6 +35,7 @@ import de.wi2020sebgruppe4.KinoTicketRes.repositories.ShowRepository;
 
 @Controller
 @RestController
+@CrossOrigin(origins = "https://kinoticketres.web.app")
 @RequestMapping("/shows")
 public class ShowController {
 	
@@ -53,7 +54,7 @@ public class ShowController {
 	@Autowired
 	SeatRepository seatRepository;
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@PutMapping("/add")
 	public ResponseEntity<Object> addShow(@RequestBody ShowRequestObject sro){
 		
@@ -113,13 +114,13 @@ public class ShowController {
 		
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@GetMapping("")
 	public ResponseEntity<Object> getAll(){
 		return new ResponseEntity<Object>(repo.findAll(), HttpStatus.OK);
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getSpecific(@PathVariable UUID id){
 		
@@ -135,7 +136,7 @@ public class ShowController {
 
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@GetMapping("/{id}/seats")
 	public ResponseEntity<Object> getSeatsForShow(@PathVariable UUID id){
 		
@@ -158,7 +159,7 @@ public class ShowController {
 		}
 	}
 	
-	@CrossOrigin(origins = "https://kinoticketres.web.app/")
+	
 	@Transactional
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteShow(@PathVariable UUID id){
