@@ -55,8 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(Arrays.asList(
-        		"https://wi2020seb-cinema.azurewebsites.net/",
-        		"https://wi2020seb-cinema.azurewebsites-dev.net/",
+                "https://kinoticketres.web.app/",
         		"https://localhost/",
         		"https://localhost:3000/",
         		"https://localhost:3001/",
