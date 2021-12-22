@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,7 @@ public class ShowController {
 	@Autowired
 	SeatRepository seatRepository;
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@PutMapping("/add")
 	public ResponseEntity<Object> addShow(@RequestBody ShowRequestObject sro){
 		
@@ -111,11 +113,13 @@ public class ShowController {
 		
 	}
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@GetMapping("")
 	public ResponseEntity<Object> getAll(){
 		return new ResponseEntity<Object>(repo.findAll(), HttpStatus.OK);
 	}
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getSpecific(@PathVariable UUID id){
 		
@@ -131,6 +135,7 @@ public class ShowController {
 
 	}
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@GetMapping("/{id}/seats")
 	public ResponseEntity<Object> getSeatsForShow(@PathVariable UUID id){
 		
@@ -153,6 +158,7 @@ public class ShowController {
 		}
 	}
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@Transactional
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteShow(@PathVariable UUID id){
