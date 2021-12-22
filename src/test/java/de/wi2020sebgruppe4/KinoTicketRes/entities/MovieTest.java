@@ -92,7 +92,7 @@ public class MovieTest {
         assertNotEquals(m.hashCode(), m5.hashCode());
         Movie m6 = new Movie("Star Wars", "Spain but the S is silent", 120, "George Lucas", null, d, "https://picute.link", "https://trailer-link", true, 12);
         assertNotEquals(m.hashCode(), m6.hashCode());
-        Movie m7 = new Movie("Star Wars", "Spain but the S is silent", 120, "George Lucas", null, d, null, "https://trailer-link", true, 12);
+        Movie m7 = new Movie("Star Wars", null, 120, "George Lucas", null, d, null, "https://trailer-link", true, 12);
         assertNotEquals(m.hashCode(), m7.hashCode());
         Movie m8 = new Movie("Star Wars", "Spain but the S is silent", 120, "George Lucas", null, null, "https://picute.link", "https://trailer-link", true, 12);
         assertNotEquals(m.hashCode(), m8.hashCode());
@@ -120,6 +120,7 @@ public class MovieTest {
     	//compare m9 to m to get ID then compare m9 to m10
     	Movie m9 = new Movie("Star Wars", "German", 120, "George Lucas", "Weltraum ist cool", null, "https://picute.link", "https://trailer-link", false, 12);
     	m9.setId(uuid);
+    	Movie m23 = new Movie("Star Wars", "German", 120, "George Lucas", "Weltraum ist cool", null, "https://picute.link", "https://trailer-link", false, 12);
     	Movie m10 = new Movie("Star Wars", "German", 120, "George Lucas", "Weltraum ist cool", null, "https://picute.link", "https://trailer-link", false, 12);
     	m10.setId(new UUID(2,3));
     	// compare isAviableIn3D
@@ -143,6 +144,7 @@ public class MovieTest {
     	
     	//run equals - methods
     	assertEquals(true, m.equals(m));
+    	assertEquals(false, m.equals(null));
     	assertEquals(false, m.equals(l));
     	assertEquals(false, m.equals(m3));
     	assertEquals(false, m4.equals(m5));
@@ -152,6 +154,7 @@ public class MovieTest {
     	assertEquals(false, m.equals(m8));
     	assertEquals(false, m9.equals(m));
     	assertEquals(false, m9.equals(m10));
+    	assertEquals(false, m.equals(m9));
     	assertEquals(false, m.equals(m11));
     	assertEquals(false, m12.equals(m13));
     	assertEquals(false, m.equals(m13));

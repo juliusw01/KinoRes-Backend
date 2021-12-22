@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,12 +28,14 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository repo;
-		
+	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@GetMapping("")
 	public ResponseEntity<Iterable<User>> getUsers(){
 		return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
 	}	
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getSpecific(@PathVariable UUID id){
 		
@@ -48,6 +51,7 @@ public class UserController {
 		
 	}
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@PutMapping("/add")
 	public ResponseEntity<Object> addUser(@RequestBody UserRequestObject uro){
 		User toAddUser = new User();
@@ -59,6 +63,7 @@ public class UserController {
 		return new ResponseEntity<Object>( repo.save(toAddUser), HttpStatus.CREATED);
 	}
 	
+	@CrossOrigin(origins = "https://kinoticketres.web.app/")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteUser(@PathVariable UUID id){
 		Optional<User> o = repo.findById(id);
