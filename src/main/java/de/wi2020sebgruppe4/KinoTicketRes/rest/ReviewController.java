@@ -55,7 +55,7 @@ public class ReviewController {
 	}
 	
 	@PutMapping("/add")
-	public ResponseEntity<Object> addMovie(@RequestBody ReviewRequestObject rro) {
+	public ResponseEntity<Object> addReview(@RequestBody ReviewRequestObject rro) {
 		
 		Review toAddReview = new Review();
 		toAddReview.setTitel(rro.titel);
@@ -87,12 +87,12 @@ public class ReviewController {
 		}
 	}
 	
-	@GetMapping("/{id]")
+	@GetMapping("/{id}")
 	public ResponseEntity<Object> getSpecific(@PathVariable UUID id) {
-		Optional<Review> review = repo.findById(id);
+		Optional<Review> r = repo.findById(id);
 		
 		try {
-			Review toReturn = review.get();
+			Review toReturn = r.get();
 			return new ResponseEntity<Object>(toReturn, HttpStatus.OK);
 		}
 		catch(NoSuchElementException e) {
