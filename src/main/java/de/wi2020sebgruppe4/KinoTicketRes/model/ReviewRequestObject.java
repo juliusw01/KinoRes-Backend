@@ -1,22 +1,23 @@
 package de.wi2020sebgruppe4.KinoTicketRes.model;
 
 import java.sql.Date;
+import java.util.UUID;
 
 public class ReviewRequestObject {
 	
 	public String titel;
 	public String content;
-	public User user;
-	public Movie movie;
+	public UUID userID;
+	public UUID movieID;
 	public int stars;
 	public java.sql.Date date;
 	
-	public ReviewRequestObject(String titel, String content, User user, Movie movie, int stars, Date date) {
+	public ReviewRequestObject(String titel, String content, UUID userID, UUID movieID, int stars, Date date) {
 		super();
 		this.titel = titel;
 		this.content = content;
-		this.user = user;
-		this.movie = movie;
+		this.userID = userID;
+		this.movieID = movieID;
 		this.stars = stars;
 		this.date = date;
 	}
