@@ -2,13 +2,20 @@ package de.wi2020sebgruppe4.KinoTicketRes.model;
 
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="c_reviews")
@@ -28,12 +35,14 @@ public class Review {
 	private String content;
 	
 	
-	@Column
-	@NotNull
+	@ManyToOne(cascade= CascadeType.ALL ,fetch=FetchType.LAZY)
+	@NotFound(action=NotFoundAction.IGNORE)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 	
-	@Column
-	@NotNull
+	@ManyToOne(cascade= CascadeType.ALL ,fetch=FetchType.LAZY)
+	@NotFound(action=NotFoundAction.IGNORE)
+	@JoinColumn(name = "movie_id", referencedColumnName = "id")
 	private Movie movie;
 	
 	@Column
@@ -85,11 +94,11 @@ public class Review {
 	public User getUser() {
 		return user;
 	}
-
+	
 	public void setUser(User user) {
 		this.user = user;
 	}
-
+	
 	public Movie getMovie() {
 		return movie;
 	}
