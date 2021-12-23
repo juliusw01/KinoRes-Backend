@@ -65,6 +65,7 @@ public class TicketController {
 		
 		Ticket toAdd = new Ticket();
 		toAdd.setSeat(toBook);
+		toAdd.setPaymentMethod(tro.paymentMethod);
 		
 		try {
 			toAdd.setShow(showRepository.findById(tro.showID).get());
