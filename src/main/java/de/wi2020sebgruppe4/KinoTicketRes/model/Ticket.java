@@ -35,6 +35,10 @@ public class Ticket {
 	@NotNull
 	private double price;
 	
+	@Column
+	@NotNull
+	private int paymentMethod;
+	
 	@ManyToOne(cascade= CascadeType.ALL ,fetch=FetchType.LAZY)
 	@NotFound(action=NotFoundAction.IGNORE)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -53,13 +57,14 @@ public class Ticket {
 		
 	}
 
-	public Ticket(@NotNull boolean isPaid, @NotNull double price, User user, Show show, Seat seat) {
+	public Ticket(@NotNull boolean isPaid, @NotNull double price, @NotNull int paymentMethod, User user, Show show, Seat seat) {
 		super();
 		this.isPaid = isPaid;
 		this.price = price;
 		this.user = user;
 		this.show = show;
 		this.seat = seat;
+		this.paymentMethod = paymentMethod;
 	}
 
 	public UUID getId() {
@@ -84,6 +89,14 @@ public class Ticket {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	
+	public int getPaymentMethod() {
+		return paymentMethod;
+	}
+	
+	public void setPaymentMethod(int paymentMethod) {
+		this.paymentMethod = paymentMethod;
 	}
 
 	public User getUser() {
@@ -140,6 +153,8 @@ public class Ticket {
 		} else if (!id.equals(other.id))
 			return false;
 		if (isPaid != other.isPaid)
+			return false;
+		if (paymentMethod != other.paymentMethod)
 			return false;
 		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
 			return false;

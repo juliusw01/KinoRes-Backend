@@ -28,7 +28,16 @@ import de.wi2020sebgruppe4.KinoTicketRes.repositories.UserRepository;
 
 @Controller
 @RestController
-@CrossOrigin(origins = "https://kinoticketres.web.app")
+@CrossOrigin(origins = 
+	   {"https://kinoticketres.web.app",
+		"https://localhost/",
+		"https://localhost:3000/",
+		"https://localhost:3001/",
+		"https://localhost:3002/",
+		"http://localhost/",
+		"http://localhost:3000/",
+		"http://localhost:3001/",
+		"http://localhost:3002/"})
 @RequestMapping("/tickets")
 public class TicketController {
 	
@@ -65,6 +74,7 @@ public class TicketController {
 		
 		Ticket toAdd = new Ticket();
 		toAdd.setSeat(toBook);
+		toAdd.setPaymentMethod(tro.paymentMethod);
 		
 		try {
 			toAdd.setShow(showRepository.findById(tro.showID).get());
