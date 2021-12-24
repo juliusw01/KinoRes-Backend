@@ -1,6 +1,5 @@
 package de.wi2020sebgruppe4.KinoTicketRes.rest;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.wi2020sebgruppe4.KinoTicketRes.model.Movie;
 import de.wi2020sebgruppe4.KinoTicketRes.model.Review;
 import de.wi2020sebgruppe4.KinoTicketRes.model.ReviewRequestObject;
+import de.wi2020sebgruppe4.KinoTicketRes.model.User;
 import de.wi2020sebgruppe4.KinoTicketRes.repositories.MovieRepository;
 import de.wi2020sebgruppe4.KinoTicketRes.repositories.ReviewRepository;
 import de.wi2020sebgruppe4.KinoTicketRes.repositories.UserRepository;
@@ -56,12 +57,18 @@ public class ReviewController {
 	
 	@PutMapping("/add")
 	public ResponseEntity<Object> addReview(@RequestBody ReviewRequestObject rro) {
+		UUID userID = rro.userID;
+		UUID movieID = rro.movieID;
+		User user = new User();
+		Movie movie = new Movie();
+		user = userRepository.findById(userID).get();
+		movie = movieRepository.findById(movieID).get();
 		
 		Review toAddReview = new Review();
 		toAddReview.setTitel(rro.titel);
 		toAddReview.setContent(rro.content);
-		toAddReview.setUser(rro.user);
-		toAddReview.setMovie(rro.movie);
+		toAddReview.setUser(user);
+		toAddReview.setMovie(movie);
 		toAddReview.setStars(rro.stars);
 		toAddReview.setDate(rro.date);
 		return new ResponseEntity<Object>(repo.save(toAddReview), HttpStatus.CREATED);
@@ -70,12 +77,18 @@ public class ReviewController {
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Object> updateReview(@PathVariable UUID id, @RequestBody ReviewRequestObject rro) {
 		Optional<Review> toUpdate = repo.findById(id);
+		UUID userID = rro.userID;
+		UUID movieID = rro.movieID;
+		User user = new User();
+		Movie movie = new Movie();
+		user = userRepository.findById(userID).get();
+		movie = movieRepository.findById(movieID).get();
 		
 		try {
 			toUpdate.get().setTitel(rro.titel);
 			toUpdate.get().setContent(rro.content);
-			toUpdate.get().setUser(rro.user);
-			toUpdate.get().setMovie(rro.movie);
+			toUpdate.get().setUser(user);
+			toUpdate.get().setMovie(movie);
 			toUpdate.get().setStars(rro.stars);
 			toUpdate.get().setDate(rro.date);
 			UUID currentReviewID = toUpdate.get().getId();
