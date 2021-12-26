@@ -57,18 +57,29 @@ public class ReviewController {
 	
 	@PutMapping("/add")
 	public ResponseEntity<Object> addReview(@RequestBody ReviewRequestObject rro) {
-		UUID userID = rro.userID;
-		UUID movieID = rro.movieID;
-		User user = new User();
-		Movie movie = new Movie();
-		user = userRepository.findById(userID).get();
-		movie = movieRepository.findById(movieID).get();
-		
 		Review toAddReview = new Review();
+		if(rro.userID != null) {
+			Optional<User> optionalUser = userRepository.findById(rro.userID);
+			try {
+				User u = optionalUser.get();
+				toAddReview.setUser(u);
+			} catch (NoSuchElementException e) {
+				return new ResponseEntity<Object>("User " + rro.userID + "not found!", HttpStatus.NOT_FOUND);
+			}
+		}
+		
+		if(rro.movieID != null) {
+			Optional<Movie> optionalMovie = movieRepository.findById(rro.movieID);
+			try {
+				Movie m = optionalMovie.get();
+				toAddReview.setMovie(m);
+			} catch (NoSuchElementException e) {
+				return new ResponseEntity<Object>("Movie " + rro.movieID + "not found!", HttpStatus.NOT_FOUND);
+			}
+		}
+		
 		toAddReview.setTitel(rro.titel);
 		toAddReview.setContent(rro.content);
-		toAddReview.setUser(user);
-		toAddReview.setMovie(movie);
 		toAddReview.setStars(rro.stars);
 		toAddReview.setDate(rro.date);
 		return new ResponseEntity<Object>(repo.save(toAddReview), HttpStatus.CREATED);
@@ -77,18 +88,30 @@ public class ReviewController {
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Object> updateReview(@PathVariable UUID id, @RequestBody ReviewRequestObject rro) {
 		Optional<Review> toUpdate = repo.findById(id);
-		UUID userID = rro.userID;
-		UUID movieID = rro.movieID;
-		User user = new User();
-		Movie movie = new Movie();
-		user = userRepository.findById(userID).get();
-		movie = movieRepository.findById(movieID).get();
+		
+		if(rro.userID != null) {
+			Optional<User> optionalUser = userRepository.findById(rro.userID);
+			try {
+				User u = optionalUser.get();
+				toUpdate.get().setUser(u);
+			} catch (NoSuchElementException e) {
+				return new ResponseEntity<Object>("User " + rro.userID + "not found!", HttpStatus.NOT_FOUND);
+			}
+		}
+		
+		if(rro.movieID != null) {
+			Optional<Movie> optionalMovie = movieRepository.findById(rro.movieID);
+			try {
+				Movie m = optionalMovie.get();
+				toUpdate.get().setMovie(m);
+			} catch (NoSuchElementException e) {
+				return new ResponseEntity<Object>("Movie " + rro.movieID + "not found!", HttpStatus.NOT_FOUND);
+			}
+		}
 		
 		try {
 			toUpdate.get().setTitel(rro.titel);
 			toUpdate.get().setContent(rro.content);
-			toUpdate.get().setUser(user);
-			toUpdate.get().setMovie(movie);
 			toUpdate.get().setStars(rro.stars);
 			toUpdate.get().setDate(rro.date);
 			UUID currentReviewID = toUpdate.get().getId();
