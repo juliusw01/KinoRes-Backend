@@ -58,13 +58,14 @@ public class Review {
 	}
 	
 	public Review(@NotNull String titel, @NotNull String content, @NotNull User user, 
-			@NotNull Movie movie, @NotNull java.sql.Date date) {
+			@NotNull Movie movie, @NotNull java.sql.Date date, @NotNull int stars) {
 		super();
 		this.titel = titel;
 		this.content = content;
 		this.user = user;
 		this.movie = movie;
 		this.date = date;
+		this.stars = stars;
 	}
 
 	public UUID getId() {

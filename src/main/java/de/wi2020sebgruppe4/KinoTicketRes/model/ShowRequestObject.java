@@ -13,7 +13,7 @@ public class ShowRequestObject {
 	public UUID movieID;
 	public UUID roomID;
 	
-	public ShowRequestObject(@NotNull Date date, @NotNull Time start, @NotNull UUID movieID, @NotNull UUID cinemaRoomID) {
+	public ShowRequestObject(@NotNull Date date, @NotNull Time start, @NotNull UUID movieID, @NotNull UUID roomID) {
 		this.date = date;
 		this.start = start;
 		this.movieID = movieID != null ? movieID : null;
