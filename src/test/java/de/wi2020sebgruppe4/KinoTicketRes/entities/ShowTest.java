@@ -36,7 +36,6 @@ public class ShowTest {
 		Layout dummyLayout = new Layout();
 		Show dummyShow = new Show();
     	Seat s = new Seat(1, 2, false, true, dummyLayout, dummyShow);
-    	Seat s2 = new Seat(7, 9, true, false, dummyLayout, dummyShow);
 		uuid = new UUID(2, 2);
 		date = new Date(2015-03-31);
 		time = new Time(02-50-21);
@@ -50,7 +49,6 @@ public class ShowTest {
     @Test
     @DisplayName("constructor test")
     public void constructorTest() {
-    	
     	
     	Show show = new Show(date, time, movie, room, seatList);
        
@@ -117,7 +115,6 @@ public class ShowTest {
     	Show show10 = new Show(date, time, movie, new Room(true, l), seatList);
     	Show show11 = new Show(date, time, movie, room, null);
     	Show show12 = new Show(date, time, movie, room, null);
-    	Show show13 = new Show(date, time, movie, room, seatList2);
     	Show show14 = new Show(null, time, movie, room, seatList);
     	Show show15 = new Show(null, time, movie, room, seatList);
     	Show show16 = new Show(new Date(2017-03-31), time, movie, room, seatList);
