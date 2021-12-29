@@ -36,7 +36,8 @@ import de.wi2020sebgruppe4.KinoTicketRes.repositories.UserRepository;
 	"http://localhost/",
 	"http://localhost:3000/",
 	"http://localhost:3001/",
-	"http://localhost:3002/"})
+	"http://localhost:3002/",
+	"http://localhost:4200/"})
 @RequestMapping("/reviews")
 public class ReviewController {
 	
@@ -109,18 +110,14 @@ public class ReviewController {
 			}
 		}
 		
-		try {
-			toUpdate.get().setTitel(rro.titel);
-			toUpdate.get().setContent(rro.content);
-			toUpdate.get().setStars(rro.stars);
-			toUpdate.get().setDate(rro.date);
-			UUID currentReviewID = toUpdate.get().getId();
-			toUpdate.get().setId(currentReviewID);
-			repo.save(toUpdate.get());
-			return new ResponseEntity<Object>(toUpdate.get(), HttpStatus.OK);
-		} catch (NoSuchElementException e) {
-			return new ResponseEntity<Object>("Movie "+id+" not found!", HttpStatus.NOT_FOUND);
-		}
+		toUpdate.get().setTitel(rro.titel);
+		toUpdate.get().setContent(rro.content);
+		toUpdate.get().setStars(rro.stars);
+		toUpdate.get().setDate(rro.date);
+		UUID currentReviewID = toUpdate.get().getId();
+		toUpdate.get().setId(currentReviewID);
+		repo.save(toUpdate.get());
+		return new ResponseEntity<Object>(toUpdate.get(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
