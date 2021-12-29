@@ -110,18 +110,14 @@ public class ReviewController {
 			}
 		}
 		
-		try {
-			toUpdate.get().setTitel(rro.titel);
-			toUpdate.get().setContent(rro.content);
-			toUpdate.get().setStars(rro.stars);
-			toUpdate.get().setDate(rro.date);
-			UUID currentReviewID = toUpdate.get().getId();
-			toUpdate.get().setId(currentReviewID);
-			repo.save(toUpdate.get());
-			return new ResponseEntity<Object>(toUpdate.get(), HttpStatus.OK);
-		} catch (NoSuchElementException e) {
-			return new ResponseEntity<Object>("Movie "+id+" not found!", HttpStatus.NOT_FOUND);
-		}
+		toUpdate.get().setTitel(rro.titel);
+		toUpdate.get().setContent(rro.content);
+		toUpdate.get().setStars(rro.stars);
+		toUpdate.get().setDate(rro.date);
+		UUID currentReviewID = toUpdate.get().getId();
+		toUpdate.get().setId(currentReviewID);
+		repo.save(toUpdate.get());
+		return new ResponseEntity<Object>(toUpdate.get(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")

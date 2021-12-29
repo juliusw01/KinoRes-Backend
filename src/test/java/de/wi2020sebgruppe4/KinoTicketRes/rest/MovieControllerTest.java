@@ -130,32 +130,26 @@ public class MovieControllerTest {
 	@Test 
 	void testGetShowsByIdException() throws Exception {
 		when(repo.findById(new UUID(0, 0))).thenReturn(getOptionalMovie());
-		mvc.perform(get("/movies/"+new UUID(0 ,0)+"/shows")
+		mvc.perform(get("/movies/"+uuid+"/shows")
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
-		
-		when(repo.findById(uuid)).thenReturn(getOptionalMovie());
-        mvc.perform(get("/movies/"+uuid+"/shows")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
 	}
-	
+		
 	@Test
 	void testUpdateMovie() throws Exception {
 		when(repo.findById(uuid)).thenReturn(getOptionalMovie());
-		mvc.perform(
-		            put("/movies/update/"+uuid)
-		            	.contentType(MediaType.APPLICATION_JSON).content(jt.write(getMovie()).getJson()))
-		        		.andExpect(status().isOk());
+		mvc.perform(put("/movies/update/"+uuid)
+		        .contentType(MediaType.APPLICATION_JSON).content(jt.write(getMovie()).getJson()))
+		       	.andExpect(status().isOk());
 	}
 	
 	@Test
 	void testUpdateMovieException() throws Exception {
 		when(repo.findById(new UUID(0, 0))).thenReturn(getOptionalMovie());
 		mvc.perform(put("/movies/update/"+uuid)
-		            	.contentType(MediaType.APPLICATION_JSON)
-		            	.content(jt.write(getMovie()).getJson()))
-		        		.andExpect(status().isNotFound());
+		        .contentType(MediaType.APPLICATION_JSON)
+		        .content(jt.write(getMovie()).getJson()))
+		        .andExpect(status().isNotFound());
 	}
 	
 	@Test
@@ -177,6 +171,6 @@ public class MovieControllerTest {
 	void testDeleteMovieException() throws Exception {
 		when(repo.findById(new UUID(0, 0))).thenReturn(getOptionalMovie());
 		mvc.perform(delete("/movies/"+uuid))
-		.andExpect(status().isNotFound());
+				.andExpect(status().isNotFound());
 	}
 }
