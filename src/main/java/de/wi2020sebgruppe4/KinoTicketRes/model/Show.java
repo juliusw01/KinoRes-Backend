@@ -113,7 +113,7 @@ public class Show {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((movie == null) ? 0 : movie.hashCode());
 		result = prime * result + ((room == null) ? 0 : room.hashCode());
-		result = prime * result + ((seats == null) ? 0 : seats.hashCode());
+		// result = prime * result + ((seats == null) ? 0 : seats.hashCode());
 		result = prime * result + ((showDate == null) ? 0 : showDate.hashCode());
 		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
 		return result;
@@ -143,11 +143,13 @@ public class Show {
 				return false;
 		} else if (!room.equals(other.room))
 			return false;
+		/*
 		if (seats == null) {
 			if (other.seats != null)
 				return false;
 		} else if (!seats.equals(other.seats))
 			return false;
+		*/
 		if (showDate == null) {
 			if (other.showDate != null)
 				return false;

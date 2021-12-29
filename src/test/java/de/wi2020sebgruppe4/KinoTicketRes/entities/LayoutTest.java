@@ -3,6 +3,9 @@ package de.wi2020sebgruppe4.KinoTicketRes.entities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.util.UUID;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +17,15 @@ import de.wi2020sebgruppe4.KinoTicketRes.model.Room;
 @SpringBootTest
 @TestPropertySource(locations="classpath:test.properties")
 public class LayoutTest {
-
+	static Room r;
+	static UUID uuid;
+	
+	@BeforeAll
+	static void beforeAll() {
+		uuid = new UUID(2,2);
+		r = new Room();
+	}
+	
     @Test
     @DisplayName("constructor test")
     public void constructorTest() {
@@ -28,9 +39,11 @@ public class LayoutTest {
     @Test
     @DisplayName("getter/setter Test")
     public void getterSetterTest() {
-        Room r = new Room();
         Layout l = new Layout();
-
+             
+        l.setId(uuid);
+        assertEquals(uuid, l.getId());
+        
         l.setRoom(r);
         assertEquals(r, l.getRoom());
         
@@ -47,9 +60,10 @@ public class LayoutTest {
         Room r = new Room();;
         Layout l1 = new Layout(30, 3, r);
         Layout l2 = new Layout(30, 3, r);
+        l1.setId(uuid);
 
         assertEquals(l1.hashCode(), l2.hashCode());
-        assertEquals(l1.equals(l2), true);
+        assertEquals(l1.equals(l2), false);
 
         // Test equals method
         Layout l3 = new Layout(20, 2, r);
@@ -57,5 +71,32 @@ public class LayoutTest {
 
         assertNotEquals(l1.hashCode(), l3.hashCode());
         assertEquals(l2.equals(l4), false);
+    }
+    
+    @Test
+    @DisplayName("Test equals")
+    public void equalsTest() {
+    	Layout l = new Layout(30, 3, r);
+    	Layout l2 = new Layout(30, 3, r);
+    	Layout l3 = new Layout(30, 3, null);
+    	Layout l4 = new Layout(10, 3, r);
+    	l4.setId(uuid);
+    	//run equals - methods
+    	assertEquals(true, l.equals(l));
+    	assertEquals(true, l.equals(l2));
+    	assertEquals(false, l.equals(null));
+    	assertEquals(false, l.equals(r));
+    	assertEquals(false, l3.equals(l));
+    	assertEquals(false, l3.equals(l));
+    	l.setRoom(null);
+    	assertEquals(true, l.equals(l3));
+    	l.setRoom(r);
+    	l.setId(uuid);
+    	assertEquals(false, l.equals(l2));
+    	assertEquals(false, l2.equals(l));
+    	l2.setId(uuid);
+    	assertEquals(true, l.equals(l2));
+    	assertEquals(false, l.equals(l4));
+    	
     }
 }
