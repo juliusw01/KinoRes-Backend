@@ -36,7 +36,8 @@ import de.wi2020sebgruppe4.KinoTicketRes.repositories.UserRepository;
 	"http://localhost/",
 	"http://localhost:3000/",
 	"http://localhost:3001/",
-	"http://localhost:3002/"})
+	"http://localhost:3002/",
+	"http://localhost:4200/"})
 @RequestMapping("/reviews")
 public class ReviewController {
 	
