@@ -68,7 +68,7 @@ public class TicketController {
 		toBook = seatRepository.findById(seatID).get();
 		Boolean booked = toBook.isBlocked();
 		if(booked) {
-			return new ResponseEntity<Object>("Seat "+seatID+" not found!", HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<Object>("Seat "+seatID+" is blocked!", HttpStatus.NOT_ACCEPTABLE);
 		}
 		toBook.setBlocked(true);
 		seatRepository.save(toBook);
@@ -76,7 +76,7 @@ public class TicketController {
 		Ticket toAdd = new Ticket();
 		toAdd.setSeat(toBook);
 		toAdd.setPaymentMethod(tro.paymentMethod);
-		
+		toAdd.setPrice(tro.price);
 		try {
 			toAdd.setShow(showRepository.findById(tro.showID).get());
 		}catch(IllegalArgumentException e) {

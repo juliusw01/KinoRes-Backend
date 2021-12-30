@@ -59,7 +59,7 @@ public class RequestObjectTest {
 	@Test
 	@DisplayName("TicketRequestObject Test")
 	public void ticketRequestObjectTest() {
-		TicketRequestObject t = new TicketRequestObject(new UUID(2, 2), new UUID(2, 2), new UUID(2, 2), new UUID(2, 2), 2);
+		TicketRequestObject t = new TicketRequestObject(new UUID(2, 2), new UUID(2, 2), 2.0, new UUID(2, 2), 2);
 	}
 	
 	@Test
