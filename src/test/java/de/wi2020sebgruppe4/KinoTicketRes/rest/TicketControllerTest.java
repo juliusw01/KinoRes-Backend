@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +33,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.wi2020sebgruppe4.KinoTicketRes.model.Layout;
+import de.wi2020sebgruppe4.KinoTicketRes.model.Movie;
+import de.wi2020sebgruppe4.KinoTicketRes.model.Room;
 import de.wi2020sebgruppe4.KinoTicketRes.model.Seat;
 import de.wi2020sebgruppe4.KinoTicketRes.model.Show;
 import de.wi2020sebgruppe4.KinoTicketRes.model.Ticket;
@@ -107,6 +111,12 @@ public class TicketControllerTest {
 		return s;
 	}
 	
+	Show getShow() {
+		Show s = new Show(new Date(2015-03-12), new Time(12-12-12), new Movie(), new Room(), null);
+		s.setId(uuid);
+		return s;
+	}
+	
 	Optional<Ticket> getOptionalTicket() {
 		Ticket t = getTicket();
 		return Optional.of(t);
@@ -119,6 +129,11 @@ public class TicketControllerTest {
 	
 	Optional<Seat> getOptionalSeat(boolean blocked) {
 		Seat s = getSeat(blocked);
+		return Optional.of(s);
+	}
+	
+	Optional<Show> getOptionalShow() {
+		Show s = getShow();
 		return Optional.of(s);
 	}
 	
@@ -147,14 +162,14 @@ public class TicketControllerTest {
 				.andExpect(status().isNotFound());
 	}
 	
-	/*
+	
 	@Test
 	void testAddTicket() throws Exception {
 		when(repo.findById(uuid)).thenReturn(getOptionalTicket());
 		when(userRepository.findById(uuid)).thenReturn(getOptionalUser());
 		when(seatRepository.findById(uuid)).thenReturn(getOptionalSeat(false));
-		
-		mvc.perform(put("/reviews/add")
+		when(showRepository.findById(uuid)).thenReturn(getOptionalShow());
+		mvc.perform(put("/tickets/add")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jtco.write(new TicketRequestObject(uuid, uuid, 2.0, uuid, 4)).getJson()))
 				.andExpect(status().isCreated());
@@ -163,25 +178,51 @@ public class TicketControllerTest {
 	@Test
 	void testAddTicketNoShow() throws Exception {
 		when(repo.findById(uuid)).thenReturn(getOptionalTicket());
-		when(seatRepository.findById(uuid)).thenReturn(getOptionalSeat());
+		when(seatRepository.findById(uuid)).thenReturn(getOptionalSeat(false));
 		when(userRepository.findById(uuid)).thenReturn(getOptionalUser());
+		when(showRepository.findById(uuid)).thenReturn(getOptionalShow());
 		mvc.perform(put("/tickets/add")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jtco.write(new TicketRequestObject(uuid, uuid, uuid, uuid, 2)).getJson()))
-				.andExpect(status().isCreated());
+				.content(jtco.write(new TicketRequestObject(uuid, uuid, 2.0, null, 2)).getJson()))
+				.andExpect(status().isNotFound());
 	}
 	
 	@Test
 	void testAddTicketNoUser() throws Exception {
 		when(repo.findById(uuid)).thenReturn(getOptionalTicket());
-		when(seatRepository.findById(uuid)).thenReturn(getOptionalSeat());
+		when(seatRepository.findById(uuid)).thenReturn(getOptionalSeat(false));
 		when(userRepository.findById(uuid)).thenReturn(getOptionalUser());
+		when(showRepository.findById(uuid)).thenReturn(getOptionalShow());
 		mvc.perform(put("/tickets/add")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jtco.write(new TicketRequestObject(null, uuid, uuid, uuid, 2)).getJson()))
+				.content(jtco.write(new TicketRequestObject(null, uuid, 2.0, uuid, 2)).getJson()))
 				.andExpect(status().isNotFound());
 	}
-	*/
+	
+	@Test
+	void testAddTicketAlreadyBooked() throws Exception {
+		when(repo.findById(uuid)).thenReturn(getOptionalTicket());
+		when(seatRepository.findById(uuid)).thenReturn(getOptionalSeat(true));
+		when(userRepository.findById(uuid)).thenReturn(getOptionalUser());
+		when(showRepository.findById(uuid)).thenReturn(getOptionalShow());
+		mvc.perform(put("/tickets/add")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jtco.write(new TicketRequestObject(uuid, uuid, 2.0, uuid, 2)).getJson()))
+				.andExpect(status().isNotAcceptable());
+	}
+	
+	@Test
+	void testAddTicketNoSeat() throws Exception {
+		when(repo.findById(uuid)).thenReturn(getOptionalTicket());
+		when(seatRepository.findById(uuid)).thenReturn(getOptionalSeat(false));
+		when(userRepository.findById(uuid)).thenReturn(getOptionalUser());
+		when(showRepository.findById(uuid)).thenReturn(getOptionalShow());
+		mvc.perform(put("/tickets/add")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jtco.write(new TicketRequestObject(uuid, null, 2.0, uuid, 2)).getJson()))
+				.andExpect(status().isNotFound());
+	}
+	
 	@Test
 	void testDeleteTicket() throws Exception {
 		when(repo.findById(uuid)).thenReturn(getOptionalTicket());
