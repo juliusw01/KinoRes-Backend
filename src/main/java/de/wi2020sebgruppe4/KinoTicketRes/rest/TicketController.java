@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
+import de.wi2020sebgruppe4.KinoTicketRes.SendingTicketsViaMail.JavaMail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,6 +76,13 @@ public class TicketController {
 		}catch(IllegalArgumentException e) {
 			return new ResponseEntity<Object>("User "+tro.userID+" not found!",
 					HttpStatus.NOT_FOUND);
+		}
+
+		try {
+			JavaMail.sendMail(toAdd.getUser().getEmail());
+		}catch (Exception e){
+			return new ResponseEntity<Object>("Mail could not send.",
+					HttpStatus.CONFLICT);
 		}
 		
 		return new ResponseEntity<Object>(repo.save(toAdd), HttpStatus.CREATED);
