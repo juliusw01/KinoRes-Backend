@@ -1,15 +1,18 @@
 package de.wi2020sebgruppe4.KinoTicketRes.SendingTicketsViaMail;
 
+import de.wi2020sebgruppe4.KinoTicketRes.model.Movie;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.util.Date;
 import java.util.Properties;
 
 public class JavaMail {
 
-    private static Message prepareMessage(Session session, String myAccount, String empfaenger){
+    private static Message prepareMessage(Session session, String myAccount, String empfaenger, String titel, Date date){
         try {
             Message message = new MimeMessage(session);
 
@@ -26,7 +29,10 @@ public class JavaMail {
             BodyPart messageBodyPart = new MimeBodyPart();
             // Textteil des Body-Parts
             messageBodyPart.setText("Lieber Kunde, \n \nvielen Dank für Ihre Buchung! \n \n" +
-                    "Viel Spaß wünscht Ihnen Gruppe 4");
+                    "Viel Spaß bei dem Film " + titel + " \n" +
+                    "Sie haben folgende Vorstellung gebucht: " + date + ".\n \n" +
+                    "Einen angenehmen Aufenthalt wünscht Ihnen \n \n" +
+                    "Gruppe 4");
             // Body-Part dem Multipart-Wrapper hinzufügen
             multipart.addBodyPart(messageBodyPart);
             // Message fertigstellen, indem sie mit dem Multipart-Content ausgestattet wird
@@ -39,7 +45,7 @@ public class JavaMail {
         return null;
     }
 
-    public static void sendMail(String empfaenger) throws Exception{
+    public static void sendMail(String empfaenger, String movieTitel, Date date) throws Exception{
 
         Properties properties = new Properties();
         properties.put("mail.smtp.auth",  "true");
@@ -59,7 +65,7 @@ public class JavaMail {
 
         // Message-Objekt erzeugen und senden!
 
-        Message message = prepareMessage(session, myAccount, empfaenger);
+        Message message = prepareMessage(session, myAccount, empfaenger, movieTitel, date);
         Transport.send(message); // E-Mail senden!
     }
 }
