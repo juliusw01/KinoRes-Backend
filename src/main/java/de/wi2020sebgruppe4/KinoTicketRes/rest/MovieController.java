@@ -52,7 +52,6 @@ public class MovieController {
 		return new ResponseEntity<Iterable<Movie>>(repo.findAll(), HttpStatus.OK);	
 	}
 	
-	
 	@PutMapping("/add")
 	public ResponseEntity<Object> addMovie(@RequestBody MovieRequestObject mro){
 		
@@ -98,7 +97,6 @@ public class MovieController {
 		
 	}
 	
-	
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getSpecific(@PathVariable UUID id){
 		
@@ -111,9 +109,7 @@ public class MovieController {
 		catch(NoSuchElementException e) {
 			return new ResponseEntity<Object>("Movie "+id+" not found!", HttpStatus.NOT_FOUND);
 		}
-		
 	}
-	
 	
 	@GetMapping("/{id}/shows")
 	public ResponseEntity<Object> getShowsForMovie(@PathVariable UUID id){
@@ -133,9 +129,7 @@ public class MovieController {
 		catch(NoSuchElementException e) {
 			return new ResponseEntity<Object>("Movie "+id+" not found!", HttpStatus.NOT_FOUND);
 		}
-		
 	}
-	
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteMovie(@PathVariable UUID id){
@@ -148,5 +142,4 @@ public class MovieController {
 			return new ResponseEntity<Object>("Movie "+id+" not found!", HttpStatus.NOT_FOUND);
 		}
 	}
-
 }
