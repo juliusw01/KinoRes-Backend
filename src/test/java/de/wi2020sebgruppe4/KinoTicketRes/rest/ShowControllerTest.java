@@ -255,20 +255,6 @@ public class ShowControllerTest {
 	}
 	
 	@Test
-	void testAddShowNoRoom() throws Exception {
-		
-		when(repo.findById(uuid)).thenReturn(getOptionalShow());
-		when(movieRepository.findById(uuid)).thenReturn(getOptionalMovie());
-		when(roomRepository.findById(uuid)).thenReturn(getOptionalRoom());
-		when(seatRepository.findById(new UUID(0, 0))).thenReturn(getOptionalSeat());
-		
-		mvc.perform(put("/shows/add/")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(jtco.write(new ShowRequestObject(new Date(2021-12-30), new Time(12-12-12), uuid, uuid)).getJson()))
-				.andExpect(status().isNotFound());
-	}
-	
-	@Test
 	void testGetSeatsForShow() throws Exception {
 		when(repo.findById(uuid)).thenReturn(getOptionalShow());
 		when(seatRepository.findAllByShow(getShow())).thenReturn(getOptionalSeatList());
