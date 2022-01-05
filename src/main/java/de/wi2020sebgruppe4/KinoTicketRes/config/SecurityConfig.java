@@ -74,7 +74,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Filt
 				"http://localhost:3001/",
 				"http://localhost:3002/",
                 "http://localhost:4200/"));
-        configuration.addAllowedOrigin("https://kinoticketres.web.app");
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "PUT", "DELETE", "PATCH"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("*"));
