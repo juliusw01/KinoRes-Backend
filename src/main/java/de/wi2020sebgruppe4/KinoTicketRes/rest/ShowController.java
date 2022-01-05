@@ -64,7 +64,7 @@ public class ShowController {
 	@Autowired
 	SeatRepository seatRepository;
 	
-	
+	@CrossOrigin("https://kinoticketres.web.app/")
 	@PutMapping("/add")
 	public ResponseEntity<Object> addShow(@RequestBody ShowRequestObject sro){
 		
