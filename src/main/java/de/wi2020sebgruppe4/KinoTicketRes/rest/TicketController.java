@@ -73,11 +73,16 @@ public class TicketController {
 			return new ResponseEntity<Object>("Seat " + seatID + " not found!", HttpStatus.NOT_FOUND);
 		}
 		
-		Boolean booked = toBook.isBlocked();
-		if(booked) {
-			return new ResponseEntity<Object>("Seat "+seatID+" is blocked!", HttpStatus.NOT_ACCEPTABLE);
+		Boolean blocked = toBook.isBlocked();
+		Boolean booked = toBook.isBooked();
+		if(blocked) {
+			return new ResponseEntity<Object>("Seat "+seatID+" is currently blocked!", HttpStatus.NOT_ACCEPTABLE);
 		}
-		toBook.setBlocked(true);
+		
+		if(booked) {
+			return new ResponseEntity<Object>("Seat "+seatID+" is already booked!", HttpStatus.NOT_ACCEPTABLE);
+		}
+		toBook.setBooked(true);
 		seatRepository.save(toBook);
 		
 		Ticket toAdd = new Ticket();
