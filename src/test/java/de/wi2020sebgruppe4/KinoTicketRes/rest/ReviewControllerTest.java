@@ -2,9 +2,9 @@ package de.wi2020sebgruppe4.KinoTicketRes.rest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.sql.Date;
@@ -29,7 +29,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.wi2020sebgruppe4.KinoTicketRes.model.LayoutRequestObject;
 import de.wi2020sebgruppe4.KinoTicketRes.model.Movie;
 import de.wi2020sebgruppe4.KinoTicketRes.model.Review;
 import de.wi2020sebgruppe4.KinoTicketRes.model.ReviewRequestObject;

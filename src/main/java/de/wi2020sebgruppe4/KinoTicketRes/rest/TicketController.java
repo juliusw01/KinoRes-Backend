@@ -1,6 +1,7 @@
 package de.wi2020sebgruppe4.KinoTicketRes.rest;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -65,10 +66,16 @@ public class TicketController {
 	public ResponseEntity<Object> addTicket(@RequestBody TicketRequestObject tro) {
 		UUID seatID = tro.seatID;
 		Seat toBook = new Seat();
-		toBook = seatRepository.findById(seatID).get();
+		Optional<Seat> seat = seatRepository.findById(seatID);
+		try {
+			toBook = seat.get();
+		} catch(NoSuchElementException e) {
+			return new ResponseEntity<Object>("Seat " + seatID + " not found!", HttpStatus.NOT_FOUND);
+		}
+		
 		Boolean booked = toBook.isBlocked();
 		if(booked) {
-			return new ResponseEntity<Object>("Seat "+seatID+" not found!", HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<Object>("Seat "+seatID+" is blocked!", HttpStatus.NOT_ACCEPTABLE);
 		}
 		toBook.setBlocked(true);
 		seatRepository.save(toBook);
@@ -76,17 +83,17 @@ public class TicketController {
 		Ticket toAdd = new Ticket();
 		toAdd.setSeat(toBook);
 		toAdd.setPaymentMethod(tro.paymentMethod);
-		
+		toAdd.setPrice(tro.price);
 		try {
 			toAdd.setShow(showRepository.findById(tro.showID).get());
-		}catch(IllegalArgumentException e) {
+		}catch(NoSuchElementException e) {
 			return new ResponseEntity<Object>("Show "+tro.showID+" not found!",
 					HttpStatus.NOT_FOUND);
 		}
 		
 		try {
 			toAdd.setUser(userRepository.findById(tro.userID).get());
-		}catch(IllegalArgumentException e) {
+		}catch(NoSuchElementException e) {
 			return new ResponseEntity<Object>("User "+tro.userID+" not found!",
 					HttpStatus.NOT_FOUND);
 		}
