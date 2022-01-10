@@ -36,7 +36,7 @@ public class Movie {
 	@NotNull
 	private String director;
 	
-	@Column
+	@Column(columnDefinition = "TEXT")
 	@NotNull
 	private String description;
 	
