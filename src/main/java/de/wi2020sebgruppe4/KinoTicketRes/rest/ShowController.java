@@ -124,7 +124,7 @@ public class ShowController {
 		
 	}
 	
-	@PutMapping("/bookSeat/{id}")
+	@PutMapping("/bookSeat")
 	public ResponseEntity<Object> blockSeat(@RequestBody SeatRequestObject sro){
 		UUID seatID = sro.seatID;
 		Seat toBook = new Seat();
