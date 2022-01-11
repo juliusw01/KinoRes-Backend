@@ -3,23 +3,21 @@ package de.wi2020sebgruppe4.KinoTicketRes.rest;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
+import java.lang.Object;
 
+import de.wi2020sebgruppe4.KinoTicketRes.SendingTicketsViaMail.ResetPassword.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import de.wi2020sebgruppe4.KinoTicketRes.model.User;
 import de.wi2020sebgruppe4.KinoTicketRes.model.UserRequestObject;
 import de.wi2020sebgruppe4.KinoTicketRes.repositories.UserRepository;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RestController
@@ -73,6 +71,18 @@ public class UserController {
 		toAddUser.setPassword(uro.password);
 		return new ResponseEntity<Object>( repo.save(toAddUser), HttpStatus.CREATED);
 	}
+
+	@PostMapping("user/resetPassword")
+	public GenericResponse resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail){
+		//es muss überprüft werden, ob es den Nutzer tatsächlich gibt
+		User user = userService.findUserByEmail(userEmail);
+		if (user == null){
+		}
+
+		String token = UUID.randomUUID().toString();
+
+	}
+
 	
 	
 	@DeleteMapping("/{id}")

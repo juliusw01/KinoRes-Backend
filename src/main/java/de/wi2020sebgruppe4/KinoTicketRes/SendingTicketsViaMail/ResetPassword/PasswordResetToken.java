@@ -1,0 +1,25 @@
+package de.wi2020sebgruppe4.KinoTicketRes.SendingTicketsViaMail.ResetPassword;
+
+import de.wi2020sebgruppe4.KinoTicketRes.model.User;
+
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+public class PasswordResetToken {
+
+    private static final int EXPIRATION = 60 * 24;
+
+    @Id
+    @GeneratedValue
+    private long id;
+
+    private String token;
+
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "user_id")
+    private de.wi2020sebgruppe4.KinoTicketRes.model.User user;
+
+    private Date expiryDate;
+
+}
