@@ -6,7 +6,10 @@ import java.util.UUID;
 import java.lang.Object;
 
 import de.wi2020sebgruppe4.KinoTicketRes.SendingTicketsViaMail.ResetPassword.GenericResponse;
+import Token.PasswordResetToken;
+import de.wi2020sebgruppe4.KinoTicketRes.repositories.PasswordResetTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,7 +20,6 @@ import de.wi2020sebgruppe4.KinoTicketRes.model.UserRequestObject;
 import de.wi2020sebgruppe4.KinoTicketRes.repositories.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RestController
@@ -37,6 +39,12 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository repo;
+
+	@Autowired
+	private PasswordResetTokenRepository passwordResetTokenRepository;
+
+	@Autowired
+	ApplicationEventPublisher applicationEventPublisher;
 	
 	
 	@GetMapping("")
@@ -74,14 +82,16 @@ public class UserController {
 
 	@PostMapping("user/resetPassword")
 	public GenericResponse resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail){
-		//es muss überprüft werden, ob es den Nutzer tatsächlich gibt
-		User user = userService.findUserByEmail(userEmail);
+		Optional<User> user = repo.findUserByEmail(userEmail);
 		if (user == null){
 		}
-
 		String token = UUID.randomUUID().toString();
+		PasswordResetToken myToken = new PasswordResetToken();
+		passwordResetTokenRepository.save(myToken);
+		return null;
+	}//Die Methode funktioniert nicht!
 
-	}
+
 
 	
 	

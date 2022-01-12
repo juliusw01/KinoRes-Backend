@@ -1,4 +1,4 @@
-package de.wi2020sebgruppe4.KinoTicketRes.SendingTicketsViaMail.ResetPassword;
+package Token;
 
 import de.wi2020sebgruppe4.KinoTicketRes.model.User;
 

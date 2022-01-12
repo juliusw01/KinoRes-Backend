@@ -39,6 +39,10 @@ public class User {
 	@Column
 	@NonNull
 	private String password;
+
+	@Column
+	@NonNull
+	private boolean enabled;
 	
 	public User() {
 		
@@ -51,6 +55,7 @@ public class User {
 		this.firstName = firstName;
 		this.email = email;
 		this.password = password;
+		this.enabled = false;
 	}
 
 	public String getUserName() {
@@ -99,6 +104,10 @@ public class User {
 
 	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 	@Override
