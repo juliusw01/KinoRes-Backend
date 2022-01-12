@@ -14,7 +14,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import de.wi2020sebgruppe4.KinoTicketRes.model.Layout;
 import de.wi2020sebgruppe4.KinoTicketRes.model.Movie;
-import org.w3c.dom.Text;
+
 
 @SpringBootTest
 @TestPropertySource(locations="classpath:test.properties")
