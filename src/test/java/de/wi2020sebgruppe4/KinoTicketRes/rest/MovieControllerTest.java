@@ -72,6 +72,8 @@ public class MovieControllerTest {
 	 Movie getMovie() {
 		    Movie m = new Movie("Star Wars2", "German", 120, "George Lucas", "Weltraum ist cool", null, "https://picute.link", "https://trailer-link", false, 12);
 	    	m.setId(uuid);
+			m.setDescriptionFile(m.getDescription());
+			m.setDescription(m.getDescriptionFile());
 	    	return m;
 	}
 	 

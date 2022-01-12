@@ -136,6 +136,7 @@ public class Movie {
 	}
 
 	public String getDescriptionFile() {
+		setDescription("");
 		try {
 			Scanner fileReader = new Scanner(this.descriptionFile);
 			while (fileReader.hasNextLine()) {
@@ -159,7 +160,7 @@ public class Movie {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		setDescription("");
 	}
 
 	public java.sql.Date getRelease() {
