@@ -1,9 +1,6 @@
 package de.wi2020sebgruppe4.KinoTicketRes.rest;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,7 +46,16 @@ public class MovieController {
 	
 	@GetMapping("")
 	public ResponseEntity<Iterable<Movie>> getAll(){
-		return new ResponseEntity<Iterable<Movie>>(repo.findAll(), HttpStatus.OK);	
+		ArrayList<Movie> movies = (ArrayList<Movie>) repo.findAll();
+		try{
+			for (int i = 0; i<movies.size(); i++){
+				Movie m = movies.get(i);
+				m.setDescription(m.getDescriptionFile());
+			}
+		}catch(NoSuchElementException e) {
+			return new ResponseEntity<Iterable<Movie>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Iterable<Movie>>(movies, HttpStatus.OK);
 	}
 	
 	@PutMapping("/add")
@@ -60,7 +66,7 @@ public class MovieController {
 		toAddMovie.setLanguage(mro.language);
 		toAddMovie.setDuration(mro.duration);
 		toAddMovie.setDirector(mro.director);
-		toAddMovie.setDescription(mro.description);
+		toAddMovie.setDescriptionFile(mro.description);
 		toAddMovie.setRelease(mro.release);
 		toAddMovie.setPictureLink(mro.pictureLink);
 		toAddMovie.setTrailerLink(mro.trailerLink);
@@ -80,7 +86,7 @@ public class MovieController {
 			toUpdate.get().setLanguage(mro.language);
 			toUpdate.get().setDuration(mro.duration);
 			toUpdate.get().setDirector(mro.director);
-			toUpdate.get().setDescription(mro.description);
+			toUpdate.get().setDescriptionFile(mro.description);
 			toUpdate.get().setRelease(mro.release);
 			toUpdate.get().setPictureLink(mro.pictureLink);
 			toUpdate.get().setTrailerLink(mro.trailerLink);
@@ -104,6 +110,7 @@ public class MovieController {
 		
 		try {
 			Movie toReturn = movie.get();
+			toReturn.setDescription(toReturn.getDescriptionFile());
 			return new ResponseEntity<Object>(toReturn, HttpStatus.OK);
 		}
 		catch(NoSuchElementException e) {

@@ -1,7 +1,11 @@
 package de.wi2020sebgruppe4.KinoTicketRes.model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Date;
-import java.util.UUID;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,11 +39,15 @@ public class Movie {
 	@Column
 	@NotNull
 	private String director;
-	
+
 	@Column(length = Integer.MAX_VALUE)
 	@NotNull
 	private String description;
-	
+
+	@Column
+	@NotNull
+	private File descriptionFile;
+
 	@Column
 	@NotNull
 	private java.sql.Date release;
@@ -125,6 +133,33 @@ public class Movie {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getDescriptionFile() {
+		try {
+			Scanner fileReader = new Scanner(this.descriptionFile);
+			while (fileReader.hasNextLine()) {
+				this.description = this.description + fileReader.nextLine();
+
+			}
+			fileReader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return description;
+	}
+
+	public void setDescriptionFile(String description) {
+		this.descriptionFile = new File(String.valueOf(id));
+		try {
+			FileWriter writeDescriptionFile = new FileWriter(this.descriptionFile);
+			writeDescriptionFile.write(description);
+			writeDescriptionFile.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public java.sql.Date getRelease() {
