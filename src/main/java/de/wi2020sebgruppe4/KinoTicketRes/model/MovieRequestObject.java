@@ -1,8 +1,5 @@
 package de.wi2020sebgruppe4.KinoTicketRes.model;
 
-import org.w3c.dom.Text;
-
-import java.sql.Blob;
 import java.sql.Date;
 
 public class MovieRequestObject {
