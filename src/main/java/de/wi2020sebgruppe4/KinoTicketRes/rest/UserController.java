@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.wi2020sebgruppe4.KinoTicketRes.model.User;
+import de.wi2020sebgruppe4.KinoTicketRes.model.UserRegistrationObject;
 import de.wi2020sebgruppe4.KinoTicketRes.model.UserRequestObject;
 import de.wi2020sebgruppe4.KinoTicketRes.repositories.UserRepository;
 
@@ -71,6 +72,38 @@ public class UserController {
 		toAddUser.setFirstName(uro.firstName);
 		toAddUser.setEmail(uro.email);
 		toAddUser.setPassword(uro.password);
+		return new ResponseEntity<Object>( repo.save(toAddUser), HttpStatus.CREATED);
+	}
+	
+	
+	@PutMapping("/register")
+	public ResponseEntity<Object> registerUser(@RequestBody UserRegistrationObject uro){
+		if(uro.password != uro.confirmPassword) {
+			return new ResponseEntity<Object>("User passwords not equal!", HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		User toAddUser = new User();
+		
+		try {
+			//Username Taken
+			repo.findByUsername(uro.userName);
+			return new ResponseEntity<Object>("Username already exists!", HttpStatus.NOT_ACCEPTABLE);
+			}
+		catch (NoSuchElementException e) {}
+		
+		try {
+			//Email Taken
+			repo.findByEmail(uro.email);
+			return new ResponseEntity<Object>("Email already exists!", HttpStatus.NOT_ACCEPTABLE);
+			}
+		catch (NoSuchElementException e) {}
+		
+		toAddUser.setUserName(uro.userName);
+		toAddUser.setName(uro.name);
+		toAddUser.setFirstName(uro.firstName);
+		toAddUser.setEmail(uro.email);
+		toAddUser.setPassword(uro.password);
+		
 		return new ResponseEntity<Object>( repo.save(toAddUser), HttpStatus.CREATED);
 	}
 	
