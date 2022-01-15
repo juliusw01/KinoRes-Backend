@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.wi2020sebgruppe4.KinoTicketRes.model.User;
 import de.wi2020sebgruppe4.KinoTicketRes.model.UserRegistrationObject;
 import de.wi2020sebgruppe4.KinoTicketRes.model.UserRequestObject;
+import de.wi2020sebgruppe4.KinoTicketRes.repositories.ReviewRepository;
 import de.wi2020sebgruppe4.KinoTicketRes.repositories.TicketRepository;
 import de.wi2020sebgruppe4.KinoTicketRes.repositories.UserRepository;
 
@@ -44,6 +45,9 @@ public class UserController {
 	
 	@Autowired 
 	private TicketRepository ticketRepository;
+	
+	@Autowired
+	private ReviewRepository reviewRepository;
 	
 	
 	@GetMapping("")
@@ -142,6 +146,18 @@ public class UserController {
 		}
 	}
 	
+	@GetMapping("/{id}/reviews")
+	public ResponseEntity<Object> getusersReviews(@PathVariable UUID id) {
+		Optional<User> u = repo.findById(id);
+		try {
+			User user = u.get();
+			return new ResponseEntity<Object>(reviewRepository.findAllForUser(user), HttpStatus.OK);
+		}
+		catch (NoSuchElementException e) {
+			return new ResponseEntity<Object>("UserID: "+ id +" not found :(", HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteUser(@PathVariable UUID id){
 		Optional<User> o = repo.findById(id);
@@ -152,5 +168,4 @@ public class UserController {
 			return new ResponseEntity<Object>("User "+id+" not found!", HttpStatus.NOT_FOUND);
 		}
 	}
-
 }
