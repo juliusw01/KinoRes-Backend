@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.wi2020sebgruppe4.KinoTicketRes.model.User;
 import de.wi2020sebgruppe4.KinoTicketRes.model.UserRegistrationObject;
 import de.wi2020sebgruppe4.KinoTicketRes.model.UserRequestObject;
+import de.wi2020sebgruppe4.KinoTicketRes.repositories.TicketRepository;
 import de.wi2020sebgruppe4.KinoTicketRes.repositories.UserRepository;
 
 @Controller
@@ -40,6 +41,9 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository repo;
+	
+	@Autowired 
+	private TicketRepository ticketRepository;
 	
 	
 	@GetMapping("")
@@ -86,14 +90,14 @@ public class UserController {
 		
 		try {
 			//Username Taken
-			repo.findByUsername(uro.userName);
+			repo.findByuserName(uro.userName);
 			return new ResponseEntity<Object>("Username already exists!", HttpStatus.NOT_ACCEPTABLE);
 			}
 		catch (NoSuchElementException e) {}
 		
 		try {
 			//Email Taken
-			repo.findByEmail(uro.email);
+			repo.findByemail(uro.email);
 			return new ResponseEntity<Object>("Email already exists!", HttpStatus.NOT_ACCEPTABLE);
 			}
 		catch (NoSuchElementException e) {}
@@ -107,6 +111,36 @@ public class UserController {
 		return new ResponseEntity<Object>( repo.save(toAddUser), HttpStatus.CREATED);
 	}
 	
+	@PutMapping("/login")
+	public ResponseEntity<Object> loginUser(@RequestBody UserRequestObject uro){
+		String email = uro.email;
+		Optional<User> user = repo.findByemail(email);
+		User toCheck;
+		try {
+			toCheck = user.get();
+		}
+		catch (NoSuchElementException e) {
+			return new ResponseEntity<Object>("User with Email: "+ email +" not found :(", HttpStatus.NOT_FOUND);
+		}
+		
+		if(uro.password != toCheck.getPassword()) {
+			return new ResponseEntity<Object>("Wrong password", HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		return new ResponseEntity<Object>("Password correct", HttpStatus.ACCEPTED);
+	}
+	
+	@GetMapping("/{id}/tickets")
+	public ResponseEntity<Object> getUsersTickets(@PathVariable UUID id) {
+		Optional<User> u = repo.findById(id);
+		try {
+			User user = u.get();
+			return new ResponseEntity<Object>(ticketRepository.findAllForUser(user), HttpStatus.OK);
+		}
+		catch (NoSuchElementException e) {
+			return new ResponseEntity<Object>("UserID: "+ id +" not found :(", HttpStatus.NOT_FOUND);
+		}
+	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteUser(@PathVariable UUID id){

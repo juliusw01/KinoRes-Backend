@@ -11,7 +11,7 @@ import de.wi2020sebgruppe4.KinoTicketRes.model.User;
 
 public interface UserRepository extends CrudRepository<User, UUID>{
 	
-	Optional<User> findByUsername(String username);
-	Optional<User> findByEmail(String email);
+	Optional<User> findByuserName(String userName);
+	Optional<User> findByemail(String email);
 	
 }
