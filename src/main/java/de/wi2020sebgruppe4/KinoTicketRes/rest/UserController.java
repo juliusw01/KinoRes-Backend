@@ -55,23 +55,6 @@ public class UserController {
 		return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
 	}	
 	
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<Object> getSpecific(@PathVariable UUID id){
-		
-		Optional<User> user = repo.findById(id);
-		
-		try {
-			User toReturn = user.get();
-			return new ResponseEntity<Object>(toReturn, HttpStatus.OK);
-		}
-		catch(NoSuchElementException e) {
-			return new ResponseEntity<Object>("User "+id+" not found!", HttpStatus.NOT_FOUND);
-		}
-		
-	}
-	
-	
 	@PutMapping("/add")
 	public ResponseEntity<Object> addUser(@RequestBody UserRequestObject uro){
 		User toAddUser = new User();
@@ -86,22 +69,22 @@ public class UserController {
 	
 	@PutMapping("/register")
 	public ResponseEntity<Object> registerUser(@RequestBody UserRegistrationObject uro){
-		if(uro.password != uro.confirmPassword) {
-			return new ResponseEntity<Object>("User passwords not equal!", HttpStatus.NOT_ACCEPTABLE);
+		if(!uro.password.equals(uro.confirmPassword)) {
+			return new ResponseEntity<Object>("User passwords not equal! "+uro.password+" != " +uro.confirmPassword, HttpStatus.NOT_ACCEPTABLE);
 		}
 		
 		User toAddUser = new User();
 		
 		try {
 			//Username Taken
-			repo.findByuserName(uro.userName);
+			repo.findByuserName(uro.userName).get();
 			return new ResponseEntity<Object>("Username already exists!", HttpStatus.NOT_ACCEPTABLE);
 			}
 		catch (NoSuchElementException e) {}
 		
 		try {
 			//Email Taken
-			repo.findByemail(uro.email);
+			repo.findByemail(uro.email).get();
 			return new ResponseEntity<Object>("Email already exists!", HttpStatus.NOT_ACCEPTABLE);
 			}
 		catch (NoSuchElementException e) {}
@@ -127,8 +110,8 @@ public class UserController {
 			return new ResponseEntity<Object>("User with Email: "+ email +" not found :(", HttpStatus.NOT_FOUND);
 		}
 		
-		if(uro.password != toCheck.getPassword()) {
-			return new ResponseEntity<Object>("Wrong password", HttpStatus.NOT_ACCEPTABLE);
+		if(!uro.password.equals(toCheck.getPassword())) {
+			return new ResponseEntity<Object>("Wrong password", HttpStatus.UNAUTHORIZED);
 		}
 		
 		return new ResponseEntity<Object>("Password correct", HttpStatus.ACCEPTED);
@@ -156,6 +139,21 @@ public class UserController {
 		catch (NoSuchElementException e) {
 			return new ResponseEntity<Object>("UserID: "+ id +" not found :(", HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Object> getSpecific(@PathVariable UUID id){
+		
+		Optional<User> user = repo.findById(id);
+		
+		try {
+			User toReturn = user.get();
+			return new ResponseEntity<Object>(toReturn, HttpStatus.OK);
+		}
+		catch(NoSuchElementException e) {
+			return new ResponseEntity<Object>("User "+id+" not found!", HttpStatus.NOT_FOUND);
+		}
+		
 	}
 	
 	@DeleteMapping("/{id}")

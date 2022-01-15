@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,12 @@ public class TokenController {
 	@Autowired 
 	private UserRepository userRepository;
 	
-	@PutMapping("/check/{id}")
+	@GetMapping("")
+	public ResponseEntity<Object> getAll() {
+		return new ResponseEntity<Object>(repo.findAll(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/check/{id}")
 	public ResponseEntity<Object> checkToken(@PathVariable UUID id) {
 		Optional<Token> t = repo.findById(id);
 		Token token;
@@ -58,6 +64,7 @@ public class TokenController {
 		
 		try {
 			User u = userSearch.get();
+			u.setPassword("Ur not getting this so ez ;)");
 			t.setUser(u);
 		} 
 		catch (NoSuchElementException e) { 
@@ -103,6 +110,12 @@ public class TokenController {
 		}
 		
 		return null;
+	}
+	
+	@PutMapping("/deleteAll")
+	public ResponseEntity<Object> deleteAll() {
+		repo.deleteAll();
+		return new ResponseEntity<Object>("deleted all Tokens", HttpStatus.OK);
 	}
 	
 }

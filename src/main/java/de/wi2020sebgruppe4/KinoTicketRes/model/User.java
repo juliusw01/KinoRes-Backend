@@ -55,6 +55,7 @@ public class User {
 		this.firstName = firstName;
 		this.email = email;
 		this.password = password;
+		this.role = "User";
 	}
 
 	public String getUserName() {
