@@ -11,6 +11,6 @@ import de.wi2020sebgruppe4.KinoTicketRes.model.User;
 
 public interface ReviewRepository extends CrudRepository<Review, UUID> {
 	
-	Optional<List<Review>> findAllForUser(User user);
+	Optional<List<Review>> findAllByUser(User user);
 	
 }

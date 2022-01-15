@@ -11,5 +11,5 @@ import de.wi2020sebgruppe4.KinoTicketRes.model.User;
 
 public interface TicketRepository extends CrudRepository<Ticket, UUID> {
 	
-	Optional<List<Ticket>> findAllForUser(User user);
+	Optional<List<Ticket>> findAllByUser(User user);
 }

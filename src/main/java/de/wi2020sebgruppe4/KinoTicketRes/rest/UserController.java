@@ -139,7 +139,7 @@ public class UserController {
 		Optional<User> u = repo.findById(id);
 		try {
 			User user = u.get();
-			return new ResponseEntity<Object>(ticketRepository.findAllForUser(user), HttpStatus.OK);
+			return new ResponseEntity<Object>(ticketRepository.findAllByUser(user), HttpStatus.OK);
 		}
 		catch (NoSuchElementException e) {
 			return new ResponseEntity<Object>("UserID: "+ id +" not found :(", HttpStatus.NOT_FOUND);
@@ -151,7 +151,7 @@ public class UserController {
 		Optional<User> u = repo.findById(id);
 		try {
 			User user = u.get();
-			return new ResponseEntity<Object>(reviewRepository.findAllForUser(user), HttpStatus.OK);
+			return new ResponseEntity<Object>(reviewRepository.findAllByUser(user), HttpStatus.OK);
 		}
 		catch (NoSuchElementException e) {
 			return new ResponseEntity<Object>("UserID: "+ id +" not found :(", HttpStatus.NOT_FOUND);
