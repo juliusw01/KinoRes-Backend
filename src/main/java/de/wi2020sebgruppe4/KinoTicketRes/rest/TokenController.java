@@ -4,6 +4,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +54,7 @@ public class TokenController {
 	}
 	
 	@PutMapping("/reset")
-	public ResponseEntity<Object> startReset(@RequestBody TokenRequestObject tro) {
+	public ResponseEntity<Object> startReset(@RequestBody TokenRequestObject tro, HttpServletRequest request) {
 		Token t = new Token();
 		t.setValid(tro.valid);
 		
@@ -72,9 +74,45 @@ public class TokenController {
 		}
 		Token saved = repo.save(t);
 		
-		//TODO: send mail with link to reset password! The mail should call the /reset/confirm method with the given token
+		//TODO: send mail with link to reset password! The mail should call the "/reset/confirm" method with the given token
+		
+		String resetPasswordLink = request.getRequestURI().toString() + "/resetWithLink/" + t.getId();
+		//send Mail
 		
 		return new ResponseEntity<Object>(saved, HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/resetWithLink/{tokenID}")
+	public ResponseEntity<Object> doResetWithLink(@RequestBody PasswordResetObject pro, @PathVariable UUID tokenID) {
+		Optional<Token> t = repo.findById(tokenID);
+		try {
+			Token token = t.get();
+			
+			// Check if its the same user that requested the reset
+			if(!pro.userID.toString().equals(token.getUser().getId().toString())) {
+				return new ResponseEntity<Object>("UserID is not valid!", HttpStatus.UNAUTHORIZED);
+			}
+			
+			// Check if Token was used before and therefore is not valid
+			if(!token.isValid()) {
+				return new ResponseEntity<Object>("Token is not valid! Was it used already?", HttpStatus.UNAUTHORIZED);
+			}
+			
+			token.setValid(false);
+			Optional<User> u = userRepository.findById(token.getUser().getId());
+			try {
+				User user = u.get();
+				user.setPassword(pro.password);
+				userRepository.save(user);
+			}
+			catch (NoSuchElementException e) {
+				return new ResponseEntity<Object>("UserID: "+ token.getUser().getId()+" not found :(", HttpStatus.NOT_FOUND);
+			}
+		}
+		catch (NoSuchElementException e) {
+			return new ResponseEntity<Object>("Token not found", HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Object>("False input", HttpStatus.BAD_REQUEST);
 	}
 	
 	@PutMapping("/reset/confirm")
