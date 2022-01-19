@@ -105,7 +105,7 @@ public class TicketController {
 		}
 
 		try {
-			JavaMail.sendMail(toAdd.getUser().getEmail(), toAdd.getShow().getMovie().getTitel(), toAdd.getShow().getShowDate());
+			JavaMail.sendTicketConformationMail(toAdd.getUser().getEmail(), toAdd.getShow().getMovie().getTitel(), toAdd.getShow().getShowDate());
 		}catch (Exception e){
 			return new ResponseEntity<Object>("Mail could not send.",
 					HttpStatus.CONFLICT);
