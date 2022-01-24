@@ -16,5 +16,4 @@ public class UserRequestObject {
 		this.email = email;
 		this.password = password;
 	}
-
 }

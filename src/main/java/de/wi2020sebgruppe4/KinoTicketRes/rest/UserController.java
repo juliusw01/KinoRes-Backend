@@ -100,14 +100,28 @@ public class UserController {
 	
 	@PutMapping("/login")
 	public ResponseEntity<Object> loginUser(@RequestBody UserRequestObject uro){
-		String email = uro.email;
-		Optional<User> user = repo.findByemail(email);
-		User toCheck;
+		Optional<User> user = null;
+		if(uro.email != null) {
+			String email = uro.email;
+			user = repo.findByemail(email);
+		}else if(uro.userName != null) {
+			String userName = uro.userName;
+			user = repo.findByuserName(userName);
+		}
+		if(user == null) {
+			return new ResponseEntity<Object>("username or email must be provided", HttpStatus.NOT_ACCEPTABLE);
+		}
+		User toCheck = null;
 		try {
 			toCheck = user.get();
 		}
 		catch (NoSuchElementException e) {
-			return new ResponseEntity<Object>("User with Email: "+ email +" not found :(", HttpStatus.NOT_FOUND);
+			if(uro.email != null) {
+				return new ResponseEntity<Object>("User with Email: "+ uro.email +" not found :(", HttpStatus.NOT_FOUND);
+			}else if(uro.userName != null) {
+				return new ResponseEntity<Object>("User with username: "+ uro.userName +" not found :(", HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<Object>("User with username or email not found :(", HttpStatus.NOT_FOUND);
 		}
 		
 		if(!uro.password.equals(toCheck.getPassword())) {
